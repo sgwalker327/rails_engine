@@ -37,17 +37,19 @@ RSpec.describe 'Merchant API' do
   end
 
   it 'can get all items for a merchant' do
-    merchant = create(:merchant)
-    item1 = create(:item, merchant_id: merchant.id)
-    item2 = create(:item, merchant_id: merchant.id)
-    item3 = create(:item, merchant_id: merchant.id)
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    item3 = create(:item, merchant_id: merchant2.id)
 
-    get api_v1_merchant_items_path(merchant)
+    get api_v1_merchant_items_path(merchant1)
 
     items = JSON.parse(response.body, symbolize_names: true)
 
-    expect(items.count).to eq(3)
+    expect(items.count).to eq(2)
     expect(items.first[:id]).to eq(item1.id)
-    expect(items.last[:id]).to eq(item3.id)
+    expect(items.last[:id]).to eq(item2.id)
+    expect(items).to_not include(item3)
   end
 end

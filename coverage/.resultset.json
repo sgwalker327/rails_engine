@@ -215,9 +215,9 @@
         "lines": [
           1,
           1,
-          9,
-          9,
-          9,
+          4,
+          4,
+          4,
           1,
           null,
           null
@@ -227,7 +227,7 @@
         "lines": [
           1,
           1,
-          5,
+          8,
           null,
           null
         ]
@@ -273,6 +273,8 @@
           1,
           1,
           1,
+          null,
+          null,
           null
         ]
       },
@@ -283,16 +285,7 @@
           null
         ]
       },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/item.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/controllers/api/v1/items_controller.rb": {
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/controllers/api/v1/merchants_controller.rb": {
         "lines": [
           1,
           1,
@@ -310,8 +303,40 @@
           1,
           null
         ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/item.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/controllers/api/v1/items_controller.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          0,
+          null,
+          1,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
       }
     },
-    "timestamp": 1679972365
+    "timestamp": 1680018024
   }
 }
