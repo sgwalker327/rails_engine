@@ -22,6 +22,8 @@ RSpec.describe 'Merchant API' do
 
     get api_v1_merchant_path(merchant1)
 
+    expect(response).to be_successful
+
     merchant = JSON.parse(response.body, symbolize_names: true)
 
     expect(merchant[:data][:type]).to eq('merchant')
@@ -39,6 +41,8 @@ RSpec.describe 'Merchant API' do
 
     get api_v1_merchant_items_path(merchant1)
 
+    expect(response).to be_successful
+
     items = JSON.parse(response.body, symbolize_names: true)
     # require 'pry'; binding.pry
     expect(items[:data].size).to eq(2)
@@ -46,5 +50,16 @@ RSpec.describe 'Merchant API' do
     expect(items[:data].last[:id]).to eq(item2.id.to_s)
     expect(items[:data].first[:attributes].size).to eq(4)
     expect(items).to_not include(item3)
+  end
+
+  it 'can find a merchant by name' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get "/api/v1/merchants/find?name=wal"
+
+    expect(response).to be_successful
+
   end
 end
