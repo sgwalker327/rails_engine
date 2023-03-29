@@ -177,111 +177,93 @@
           null
         ]
       },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/customers.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/invoice_items.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/invoices.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/items.rb": {
+        "lines": [
+          1,
+          1,
+          2,
+          2,
+          2,
+          1,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/merchants.rb": {
+        "lines": [
+          1,
+          1,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/factories/transactions.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
       "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/config/routes.rb": {
         "lines": [
           1,
+          1,
+          1,
+          1,
+          1,
           null,
+          1,
+          1,
           null,
           null,
           null,
           null
         ]
       },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/customer.rb": {
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/support/factory_bot.rb": {
         "lines": [
           1,
           1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/application_record.rb": {
-        "lines": [
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/models/invoice_item_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          null,
-          null,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/invoice_item.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/models/invoice_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          2,
-          2,
-          2,
-          null,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/invoice.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/models/item_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          2,
-          null,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/item.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/models/merchant_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          2,
-          2,
-          2,
-          2,
-          2,
-          null,
           null
         ]
       },
@@ -293,28 +275,32 @@
           1,
           1,
           1,
-          null
-        ]
-      },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/spec/models/transaction_spec.rb": {
-        "lines": [
-          1,
           null,
-          1,
-          1,
-          2,
           null,
           null
         ]
       },
-      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/transaction.rb": {
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/application_record.rb": {
         "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/models/item.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
           1,
           1,
           null
         ]
       }
     },
-    "timestamp": 1679959635
+    "timestamp": 1680112550
   }
 }

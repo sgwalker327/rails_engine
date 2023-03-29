@@ -26,13 +26,12 @@ gem "puma", "~> 5.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
-
+gem 'jsonapi-serializer'
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
@@ -45,6 +44,7 @@ group :development, :test do
   gem "shoulda-matchers"
   gem "factory_bot_rails", '~> 6.2.0'
   gem "faker"
+  gem "jsonapi-serializer"
 end
 
 group :development do
