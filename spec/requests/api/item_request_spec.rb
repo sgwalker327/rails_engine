@@ -10,27 +10,15 @@ RSpec.describe 'Items API' do
     get api_v1_items_path
 
     expect(response).to be_successful
-
     items = JSON.parse(response.body, symbolize_names: true)
-    # require 'pry'; binding.pry
-    expect(items.count).to eq(5)
+    
+    expect(items[:data]).to be_an(Array)
+    expect(items[:data].count).to eq(5)
+    expect(items[:data][0].size).to eq(3)
+    expect(items[:data][0][:attributes].size).to eq(4)
+    expect(items[:data][0][:type]).to eq('item')
+    expect(items[:data][0][:attributes].keys).to eq([:name, :description, :unit_price, :merchant_id])
 
-    items.each do |item|
-      expect(item).to have_key(:id)
-      expect(item[:id]).to be_an(Integer)
-
-      expect(item).to have_key(:name)
-      expect(item[:name]).to be_an(String)
-
-      expect(item).to have_key(:description)
-      expect(item[:description]).to be_an(String)
-
-      expect(item).to have_key(:unit_price)
-      expect(item[:unit_price]).to be_an(Float)
-
-      expect(item).to have_key(:merchant_id)
-      expect(item[:merchant_id]).to be_an(Integer)
-    end
   end
 
   it 'sends one item by its id' do
@@ -40,32 +28,79 @@ RSpec.describe 'Items API' do
     item2 = create(:item, merchant_id: merchant1.id)
     item3 = create(:item, merchant_id: merchant2.id)
 
-    get api_v1_item_path(item1)
+    get api_v1_merchant_item_path(merchant1, item1)
 
     expect(response).to be_successful
 
     item = JSON.parse(response.body, symbolize_names: true)
-
-    expect(item).to have_key(:merchant_id)
-    expect(item[:merchant_id]).to eq(item1.merchant_id)
+    
+    expect(item[:data]).to be_a(Hash)
+    expect(item[:data][:id]).to eq(item1.id.to_s)
+    expect(item[:data].size).to eq(3)
+    expect(item[:data].keys).to eq([:id, :type, :attributes])
+    expect(item[:data][:type]).to eq('item')
+    expect(item[:data][:attributes].keys).to eq([:name, :description, :unit_price, :merchant_id])
+    expect(item[:data][:attributes][:name]).to eq(item1.name)
+    expect(item[:data][:attributes][:description]).to eq(item1.description)
+    expect(item[:data][:attributes][:unit_price]).to eq(item1.unit_price)
+    expect(item[:data][:attributes][:merchant_id]).to eq(item1.merchant_id)
   end
 
   it 'can create a new item' do
     merchant = create(:merchant)
-    item1 = { name: "Item 1", description: "Description 1", unit_price: 1.00, merchant_id: merchant.id }
+    item1 = ({ name: "Item 1",
+                description: "Description 1",
+                unit_price: 1.00,
+                merchant_id: merchant.id })
 
+    headers = {"CONTENT_TYPE" => "application/json"}
+      
     post api_v1_items_path(item1)
+    
+    new_item = Item.last
 
     expect(response).to be_successful
 
     item = JSON.parse(response.body, symbolize_names: true)
 
-    expect(item).to have_key(:id)
-    expect(item[:name]).to eq("Item 1")
-    expect(item[:description]).to eq("Description 1")
-    expect(item[:unit_price]).to eq(1.00)
-    expect(item[:merchant_id]).to eq(merchant.id)
+    expect(item).to be_a(Hash)
+    expect(item[:data].keys).to eq([:id, :type, :attributes])
+    expect(item[:data][:type]).to eq("item")
+    expect(item[:data][:attributes].keys).to eq([:name, :description, :unit_price, :merchant_id])
+    expect(item[:data][:attributes][:name]).to eq("Item 1")
+    expect(item[:data][:attributes][:description]).to eq("Description 1")
+    expect(item[:data][:attributes][:unit_price]).to eq(1.00)
+    expect(item[:data][:attributes][:merchant_id]).to eq(merchant.id)
   end
+
+  it 'does not create an item if the params are incorrect' do
+    merchant = create(:merchant)
+    item1 = ({ name: "Item 1",
+                description: "Description 1",
+                unit_price: "five",
+                merchant_id: merchant.id })
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+      
+    post api_v1_items_path(item1)
+
+    expect(response).to have_http_status(400)
+  end
+
+  it 'can destroy an item' do
+    merchant = create(:merchant)
+    item = create(:item, merchant_id: merchant.id)
+
+    expect(Item.count).to eq(1)
+
+    delete api_v1_item_path(item)
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect{Item.find(item.id).to raise_error(ActiveRecord::RecordNotFound)}
+  end
+
+  
 
   it 'can update an existing item' do
     merchant = create(:merchant)
@@ -85,16 +120,46 @@ RSpec.describe 'Items API' do
     expect(item[:name]).to_not eq('Thing-a-ma-gig')
   end
 
-  it 'can destroy an item' do
+  it 'does not update an item if the merchant is invalid' do
     merchant = create(:merchant)
-    item = create(:item, merchant_id: merchant.id)
+    item1 = create(:item, merchant_id: merchant.id)
+    new_attributes = { merchant_id: "beaver" }
+  
+    patch api_v1_item_path(item1), params: new_attributes
+    
+    expect(response).to have_http_status(400)
+  end
 
-    expect(Item.count).to eq(1)
+  it 'can get merchant data for an item' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant2.id)
 
-    delete api_v1_item_path(item)
+    get api_v1_item_merchant_path(item1)
 
     expect(response).to be_successful
-    expect(Item.count).to eq(0)
-    expect{Item.find(item.id).to raise_error(ActiveRecord::RecordNotFound)}
+
+    merchant = JSON.parse(response.body, symbolize_names: true)
+    
+    expect(merchant[:data]).to be_a(Hash)
+    expect(merchant[:data].keys).to eq([:id, :type, :attributes])
+    expect(merchant[:data][:attributes].keys).to eq([:name])
+    expect(merchant[:data][:attributes][:name]).to eq(merchant1.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant2.name)
+  end
+
+  it "Won't create an item if all attributes are missing" do
+    merchant = create(:merchant)
+    item1 = ({ name: "",
+                description: "",
+                unit_price: "",
+                merchant_id: "" })
+
+    headers = {"CONTENT_TYPE" => "application/json"}
+      
+    post api_v1_items_path(item1)
+    
+    expect(response).to have_http_status(400)
   end
 end

@@ -6,19 +6,31 @@ class Api::V1::ItemsController < ApplicationController
     else
       @items = Item.all
     end
-    render json: @items
+    render json: ItemSerializer.new(@items)
   end
 
   def show
-    render json: Item.find(params[:id])
+    item = Item.find(params[:id])
+    render json: ItemSerializer.new(item)
   end
 
   def create
-    render json: Item.create(item_params)
+    item = Item.new(item_params)
+    if item.save
+      render json: ItemSerializer.new(item), status: 201
+    else
+      render json: { error: 'Invalid Data' }, status: 400
+    end
   end
 
   def update
-    render json: Item.update(item_params)
+    item = Item.find(params[:id])
+    
+      if item.update(item_params)
+        render json: ItemSerializer.new(item), status: 201
+      else
+        render json: { error: 'Invalid Data' }, status: 400
+      end
   end
 
   def destroy
