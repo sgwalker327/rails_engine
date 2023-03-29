@@ -46,13 +46,16 @@ RSpec.describe 'Merchant API' do
     items = JSON.parse(response.body, symbolize_names: true)
     # require 'pry'; binding.pry
     expect(items[:data].size).to eq(2)
+    expect(items[:data].first.size).to eq(3)
+    expect(items[:data].first[:attributes].size).to eq(4)
+    expect(items[:data][0].keys).to include(:id, :type, :attributes)
+    expect(items[:data][0][:attributes].keys).to include(:name, :description, :unit_price, :merchant_id)
     expect(items[:data].first[:id]).to eq(item1.id.to_s)
     expect(items[:data].last[:id]).to eq(item2.id.to_s)
-    expect(items[:data].first[:attributes].size).to eq(4)
     expect(items).to_not include(item3)
   end
 
-  it 'can find a merchant by name' do
+  it 'can find a merchant by name (case insensitive, alphabetical order, first result)' do
     merchant1 = create(:merchant, name: 'Walmart')
     merchant2 = create(:merchant, name: 'Walgreens')
     merchant3 = create(:merchant, name: "It's a Puzzle Store")
@@ -60,6 +63,12 @@ RSpec.describe 'Merchant API' do
     get "/api/v1/merchants/find?name=wal"
 
     expect(response).to be_successful
+    
+    merchant = JSON.parse(response.body, symbolize_names: true)
+   
 
+    expect(merchant[:data][:attributes][:name]).to eq(merchant2.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant1.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant3.name)
   end
 end
