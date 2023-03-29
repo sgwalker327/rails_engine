@@ -28,7 +28,7 @@ RSpec.describe 'Items API' do
     item2 = create(:item, merchant_id: merchant1.id)
     item3 = create(:item, merchant_id: merchant2.id)
 
-    get api_v1_merchant_item_path(merchant1, item1)
+    get api_v1_item_path(item1)
 
     expect(response).to be_successful
 
