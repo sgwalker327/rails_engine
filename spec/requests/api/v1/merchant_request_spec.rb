@@ -44,7 +44,7 @@ RSpec.describe 'Merchant API' do
     expect(response).to be_successful
 
     items = JSON.parse(response.body, symbolize_names: true)
-    # require 'pry'; binding.pry
+   
     expect(items[:data].size).to eq(2)
     expect(items[:data].first.size).to eq(3)
     expect(items[:data].first[:attributes].size).to eq(4)
@@ -77,6 +77,7 @@ RSpec.describe 'Merchant API' do
     expect(merchant[:data][:attributes][:name]).to_not eq(merchant3.name)
   end
 
+  #tests below currently not passing postman tests
   it 'returns an error when no fragment is found' do
     merchant1 = create(:merchant, name: 'Walmart')
     merchant2 = create(:merchant, name: 'Walgreens')
