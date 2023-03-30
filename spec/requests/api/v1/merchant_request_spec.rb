@@ -60,7 +60,7 @@ RSpec.describe 'Merchant API' do
     merchant2 = create(:merchant, name: 'Walgreens')
     merchant3 = create(:merchant, name: "It's a Puzzle Store")
 
-    get "/api/v1/merchants/find?name=wal"
+    get "/api/v1/merchants/find?name=wAl"
 
     expect(response).to be_successful
     
