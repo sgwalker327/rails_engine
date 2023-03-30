@@ -30,5 +30,53 @@ RSpec.describe Item, type: :model do
         expect(Item.name_search('b')).to eq([item3, item1, item2, item4])
       end
     end
+
+    describe '.min_price_search' do
+      it 'returns all items that are greater than or equal to the min price, alphabetical order, case insensitive' do
+        merchant1 = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant3 = create(:merchant)
+        item1 = create(:item, name: "Pin", unit_price: 2.00, merchant_id: merchant1.id)
+        item2 = create(:item, name: "picture", unit_price: 4.50, merchant_id: merchant1.id)
+        item3 = create(:item, name: "apron", unit_price: 8.00, merchant_id: merchant2.id)
+        item4 = create(:item, name: "Ab wheel", unit_price: 10.00, merchant_id: merchant2.id)
+        item5 = create(:item, name: "Brush", unit_price: 15.00, merchant_id: merchant3.id)
+        item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
+
+        expect(Item.min_price_search(10.00).compact).to eq([item4, item5, item6])
+      end
+    end
+
+    describe '.max_price_search' do
+      it 'returns all items that are less than or equal to the max price, alphabetical order, case insensitive' do
+        merchant1 = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant3 = create(:merchant)
+        item1 = create(:item, name: "Pin", unit_price: 2.00, merchant_id: merchant1.id)
+        item2 = create(:item, name: "picture", unit_price: 4.50, merchant_id: merchant1.id)
+        item3 = create(:item, name: "apron", unit_price: 8.00, merchant_id: merchant2.id)
+        item4 = create(:item, name: "Ab wheel", unit_price: 10.00, merchant_id: merchant2.id)
+        item5 = create(:item, name: "Brush", unit_price: 15.00, merchant_id: merchant3.id)
+        item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
+
+        expect(Item.max_price_search(10.00).compact).to eq([item4, item3, item2, item1])
+      end
+    end
+
+    describe '.max_price_search' do
+      it 'returns all items that are less than or equal to the max price, alphabetical order, case insensitive' do
+        merchant1 = create(:merchant)
+        merchant2 = create(:merchant)
+        merchant3 = create(:merchant)
+        item1 = create(:item, name: "Pin", unit_price: 2.00, merchant_id: merchant1.id)
+        item2 = create(:item, name: "picture", unit_price: 4.50, merchant_id: merchant1.id)
+        item3 = create(:item, name: "apron", unit_price: 8.00, merchant_id: merchant2.id)
+        item4 = create(:item, name: "Ab wheel", unit_price: 10.00, merchant_id: merchant2.id)
+        item5 = create(:item, name: "Brush", unit_price: 15.00, merchant_id: merchant3.id)
+        item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
+
+        expect(Item.price_range_search(3.00, 15.00).compact).to eq([item4, item3, item5, item2])
+      end
+    end
   end
 end
