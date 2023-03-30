@@ -281,4 +281,32 @@ RSpec.describe 'Items API' do
     expect(items[:data][1][:attributes][:name]).to eq(item2.name)
     expect(items[:data][2][:attributes][:name]).to eq(item1.name)
   end
+
+  it 'returns a list of items with a unit price less than or equal to a given price' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    item1 = create(:item, name: "Pin", unit_price: 2.00, merchant_id: merchant1.id)
+    item2 = create(:item, name: "picture", unit_price: 4.50, merchant_id: merchant1.id)
+    item3 = create(:item, name: "apron", unit_price: 8.00, merchant_id: merchant2.id)
+    item4 = create(:item, name: "Ab wheel", unit_price: 10.00, merchant_id: merchant2.id)
+    item5 = create(:item, name: "Brush", unit_price: 15.00, merchant_id: merchant3.id)
+    item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
+
+    get '/api/v1/items/find_all?max_price=15.00&min_price=5.00'
+
+    expect(response).to be_successful
+
+    items = JSON.parse(response.body, symbolize_names: true)
+    
+    expect(items[:data]).to be_a(Array)
+    expect(items[:data].size).to eq(3)
+    expect(items[:data][0].keys).to include(:id, :type, :attributes)
+    expect(items[:data][0][:type]).to eq('item')
+    expect(items[:data][0][:attributes].size).to eq(4)
+    expect(items[:data][0][:attributes].keys).to include(:name, :description, :unit_price, :merchant_id)
+    expect(items[:data][0][:attributes][:name]).to eq(item4.name)
+    expect(items[:data][1][:attributes][:name]).to eq(item3.name)
+    expect(items[:data][2][:attributes][:name]).to eq(item5.name)
+  end
 end
