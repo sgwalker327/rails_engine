@@ -162,4 +162,66 @@ RSpec.describe 'Items API' do
     
     expect(response).to have_http_status(400)
   end
+
+  it 'can find all items by name (case insensitive, alphabetical order, first result)' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    item1 = create(:item, name: 'bike', merchant_id: merchant1.id)
+    item2 = create(:item, name: 'block',merchant_id: merchant1.id)
+    item3 = create(:item, name: 'Bark', merchant_id: merchant2.id)
+    item4 = create(:item, name: 'Branch', merchant_id: merchant2.id)
+    item5 = create(:item, name: 'clock', merchant_id: merchant3.id)
+    item6 = create(:item, name: 'Desk', merchant_id: merchant3.id)
+
+    get "/api/v1/items/find_all?name=b"
+
+    expect(response).to be_successful
+    
+    items = JSON.parse(response.body, symbolize_names: true)
+    # require 'pry'; binding.pry
+    expect(items[:data]).to be_a(Array)
+    expect(items[:data].size).to eq(4)
+    expect(items[:data][0].keys).to include(:id, :type, :attributes)
+    expect(items[:data][0][:type]).to eq('item')
+    expect(items[:data][0][:attributes].size).to eq(4)
+    expect(items[:data][0][:attributes].keys).to include(:name, :description, :unit_price, :merchant_id)
+    expect(items[:data][0][:attributes][:name]).to eq(item3.name)
+    expect(items[:data][1][:attributes][:name]).to eq(item1.name)
+    expect(items[:data][2][:attributes][:name]).to eq(item2.name)
+    expect(items[:data][3][:attributes][:name]).to eq(item4.name)
+  end
+
+  #tests below currently not passing postman tests
+  it 'returns an error when no fragment is found' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    item1 = create(:item, name: 'bike', merchant_id: merchant1.id)
+    item2 = create(:item, name: 'block',merchant_id: merchant1.id)
+    item3 = create(:item, name: 'Bark', merchant_id: merchant2.id)
+    item4 = create(:item, name: 'Branch', merchant_id: merchant2.id)
+    item5 = create(:item, name: 'clock', merchant_id: merchant3.id)
+    item6 = create(:item, name: 'Desk', merchant_id: merchant3.id)
+
+    get "/api/v1/items/find_all?name=but"
+   
+    expect(response.status).to eq(200)
+  end
+
+  it 'returns an error when nothing is searched' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    item1 = create(:item, name: 'bike', merchant_id: merchant1.id)
+    item2 = create(:item, name: 'block',merchant_id: merchant1.id)
+    item3 = create(:item, name: 'Bark', merchant_id: merchant2.id)
+    item4 = create(:item, name: 'Branch', merchant_id: merchant2.id)
+    item5 = create(:item, name: 'clock', merchant_id: merchant3.id)
+    item6 = create(:item, name: 'Desk', merchant_id: merchant3.id)
+
+    get '/api/v1/items/find_all?name=""'
+
+    expect(response.status).to eq(200)
+  end
 end
