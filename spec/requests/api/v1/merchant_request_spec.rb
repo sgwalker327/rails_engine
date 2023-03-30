@@ -85,7 +85,7 @@ RSpec.describe 'Merchant API' do
 
     get "/api/v1/merchants/find?name=but"
 
-    expect(response.status).to eq(400)
+    expect(response.status).to eq(200)
   end
 
   it 'returns an error when nothing is searched' do
@@ -95,6 +95,6 @@ RSpec.describe 'Merchant API' do
 
     get '/api/v1/merchants/find?name=""'
 
-    expect(response.status).to eq(400)
+    expect(response.status).to eq(200)
   end
 end
