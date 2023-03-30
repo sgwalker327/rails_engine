@@ -309,4 +309,20 @@ RSpec.describe 'Items API' do
     expect(items[:data][1][:attributes][:name]).to eq(item3.name)
     expect(items[:data][2][:attributes][:name]).to eq(item5.name)
   end
+
+  it 'returns an array when name and price are searced at the same time' do
+    merchant1 = create(:merchant)
+    merchant2 = create(:merchant)
+    merchant3 = create(:merchant)
+    item1 = create(:item, name: "Pin", unit_price: 2.00, merchant_id: merchant1.id)
+    item2 = create(:item, name: "picture", unit_price: 4.50, merchant_id: merchant1.id)
+    item3 = create(:item, name: "apron", unit_price: 8.00, merchant_id: merchant2.id)
+    item4 = create(:item, name: "Ab wheel", unit_price: 10.00, merchant_id: merchant2.id)
+    item5 = create(:item, name: "Brush", unit_price: 15.00, merchant_id: merchant3.id)
+    item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
+
+    get '/api/v1/items/find_all?name="a"&min_price=5.00'
+
+    expect(response.status).to eq(200)
+  end
 end
