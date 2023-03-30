@@ -5,8 +5,9 @@ class Merchant < ApplicationRecord
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
 
-  def self.name_search(name_params)
-    where("name ILIKE ?", "%#{name_params}%").order(:name).first
+  def self.name_search(name)
+    where("name ILIKE ?", "%#{name}%").order("LOWER(name)").first
   end
+  
   
 end
