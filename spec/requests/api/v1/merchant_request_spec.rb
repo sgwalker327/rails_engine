@@ -65,10 +65,35 @@ RSpec.describe 'Merchant API' do
     expect(response).to be_successful
     
     merchant = JSON.parse(response.body, symbolize_names: true)
-   
 
+    expect(merchant[:data]).to be_a(Hash)
+    expect(merchant[:data].size).to eq(3)
+    expect(merchant[:data].keys).to include(:id, :type, :attributes)
+    expect(merchant[:data][:type]).to eq('merchant')
+    expect(merchant[:data][:attributes].size).to eq(1)
+    expect(merchant[:data][:attributes].keys).to include(:name)
     expect(merchant[:data][:attributes][:name]).to eq(merchant2.name)
     expect(merchant[:data][:attributes][:name]).to_not eq(merchant1.name)
     expect(merchant[:data][:attributes][:name]).to_not eq(merchant3.name)
+  end
+
+  it 'returns an error when no fragment is found' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get "/api/v1/merchants/find?name=but"
+
+    expect(response.status).to eq(400)
+  end
+
+  it 'returns an error when nothing is searched' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get '/api/v1/merchants/find?name=""'
+
+    expect(response.status).to eq(400)
   end
 end
