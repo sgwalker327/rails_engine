@@ -429,7 +429,7 @@
           1,
           null,
           1,
-          5,
+          4,
           null,
           null,
           1,
@@ -484,8 +484,6 @@
           null,
           1,
           4,
-          null,
-          null,
           null,
           null
         ]
@@ -837,6 +835,13 @@
           null,
           1,
           null,
+          null,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
           null
         ]
       },
@@ -921,7 +926,6 @@
           1,
           null,
           null,
-          null,
           1,
           1,
           1,
@@ -991,10 +995,10 @@
       "/Users/samwalker/Documents/Turing/3mod/projects/rails_engine/app/controllers/application_controller.rb": {
         "lines": [
           1,
-          1,
           null,
-          1,
-          0,
+          null,
+          null,
+          null,
           null,
           null
         ]
@@ -1029,18 +1033,23 @@
         "lines": [
           1,
           1,
+          8,
+          1,
           7,
           1,
+          1,
           6,
-          4,
+          3,
+          3,
+          3,
+          1,
+          1,
           2,
           1,
           1,
+          null,
           1,
           null,
-          0,
-          null,
-          7,
           null,
           null
         ]
@@ -1084,6 +1093,6 @@
         ]
       }
     },
-    "timestamp": 1680147333
+    "timestamp": 1680221706
   }
 }

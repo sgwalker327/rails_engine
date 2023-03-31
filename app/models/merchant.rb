@@ -8,6 +8,4 @@ class Merchant < ApplicationRecord
   def self.name_search(name)
     where("name ILIKE ?", "%#{name}%").order("LOWER(name)").first
   end
-  
-  
 end

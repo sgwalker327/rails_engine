@@ -77,7 +77,6 @@ RSpec.describe 'Merchant API' do
     expect(merchant[:data][:attributes][:name]).to_not eq(merchant3.name)
   end
 
-  #tests below currently not passing postman tests
   it 'returns an error when no fragment is found' do
     merchant1 = create(:merchant, name: 'Walmart')
     merchant2 = create(:merchant, name: 'Walgreens')

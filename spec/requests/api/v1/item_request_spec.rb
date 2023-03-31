@@ -322,7 +322,14 @@ RSpec.describe 'Items API' do
     item6 = create(:item, name: "Shorts", unit_price: 20.00, merchant_id: merchant3.id)
 
     get '/api/v1/items/find_all?name="a"&min_price=5.00'
+    # require 'pry'; binding.pry
+    expect(response.status).to eq(400)
+    # require 'pry'; binding.pry
+  end
 
-    expect(response.status).to eq(200)
+  it 'returns an error when a price less than 0 is searched' do
+    get '/api/v1/items/find_all?min_price=-8.00'
+
+    expect(response.status).to eq(400)
   end
 end
