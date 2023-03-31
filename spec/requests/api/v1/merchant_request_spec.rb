@@ -22,6 +22,8 @@ RSpec.describe 'Merchant API' do
 
     get api_v1_merchant_path(merchant1)
 
+    expect(response).to be_successful
+
     merchant = JSON.parse(response.body, symbolize_names: true)
 
     expect(merchant[:data][:type]).to eq('merchant')
@@ -39,12 +41,59 @@ RSpec.describe 'Merchant API' do
 
     get api_v1_merchant_items_path(merchant1)
 
+    expect(response).to be_successful
+
     items = JSON.parse(response.body, symbolize_names: true)
-    # require 'pry'; binding.pry
+   
     expect(items[:data].size).to eq(2)
+    expect(items[:data].first.size).to eq(3)
+    expect(items[:data].first[:attributes].size).to eq(4)
+    expect(items[:data][0].keys).to include(:id, :type, :attributes)
+    expect(items[:data][0][:attributes].keys).to include(:name, :description, :unit_price, :merchant_id)
     expect(items[:data].first[:id]).to eq(item1.id.to_s)
     expect(items[:data].last[:id]).to eq(item2.id.to_s)
-    expect(items[:data].first[:attributes].size).to eq(4)
     expect(items).to_not include(item3)
+  end
+
+  it 'can find a merchant by name (case insensitive, alphabetical order, first result)' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get "/api/v1/merchants/find?name=wAl"
+
+    expect(response).to be_successful
+    
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(merchant[:data]).to be_a(Hash)
+    expect(merchant[:data].size).to eq(3)
+    expect(merchant[:data].keys).to include(:id, :type, :attributes)
+    expect(merchant[:data][:type]).to eq('merchant')
+    expect(merchant[:data][:attributes].size).to eq(1)
+    expect(merchant[:data][:attributes].keys).to include(:name)
+    expect(merchant[:data][:attributes][:name]).to eq(merchant2.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant1.name)
+    expect(merchant[:data][:attributes][:name]).to_not eq(merchant3.name)
+  end
+
+  it 'returns an error when no fragment is found' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get "/api/v1/merchants/find?name=but"
+
+    expect(response.status).to eq(200)
+  end
+
+  it 'returns an error when nothing is searched' do
+    merchant1 = create(:merchant, name: 'Walmart')
+    merchant2 = create(:merchant, name: 'Walgreens')
+    merchant3 = create(:merchant, name: "It's a Puzzle Store")
+
+    get '/api/v1/merchants/find?name=""'
+
+    expect(response.status).to eq(200)
   end
 end
