@@ -1,6 +1,6 @@
 class Api::V1::Items::SearchController < ApplicationController
   def index
-    if params[:name] && (params[:min_price].to_f > 0 || params[:max_price].to_f > 0)
+    if params[:name] && (params[:min_price] || params[:max_price])
       render json: { errors: 'Invalid Search' }, status: 400
     elsif params[:min_price].to_f > 0 && params[:max_price].to_f > 0
       item = Item.price_range_search(params[:min_price], params[:max_price])
